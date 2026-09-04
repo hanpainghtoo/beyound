@@ -1,0 +1,480 @@
+erDiagram
+    USERS {
+        int user_id PK
+        string first_name
+        string last_name
+        string email
+        string phone_number
+        string csr_id
+        string department
+        string location
+        string bio
+        string profile_photo_url
+        int role_id FK
+        int tenant_id FK
+        datetime join_date
+        datetime last_login
+        datetime created_at
+        datetime updated_at
+        boolean is_active
+        string status "active/inactive/suspended"
+    }
+    
+    ROLES {
+        int role_id PK
+        string role_name
+        string description
+        string role_type "system/custom"
+        int user_count
+        datetime created_at
+        datetime updated_at
+        boolean is_system_role
+        boolean is_active
+    }
+    
+    PERMISSIONS {
+        int permission_id PK
+        string permission_name
+        string module
+        string action_type "view/edit/delete/export"
+        string description
+    }
+    
+    ROLE_PERMISSIONS {
+        int role_id FK
+        int permission_id FK
+        boolean can_view
+        boolean can_edit
+        boolean can_delete
+        boolean can_export
+        datetime assigned_at
+    }
+    
+    TENANTS {
+        int tenant_id PK
+        string tenant_name
+        string domain
+        string status "active/inactive/suspended"
+        int subscription_plan_id FK
+        int total_users
+        decimal monthly_revenue
+        datetime created_at
+        datetime last_activity
+    }
+    
+    SUBSCRIPTION_PLANS {
+        int plan_id PK
+        string plan_name
+        decimal monthly_cost
+        string description
+        int user_limit
+        int api_call_limit_monthly
+        int storage_limit_gb
+        text features_included
+        string plan_type "basic/professional/enterprise"
+        int subscriber_count
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+    
+    COMPANY_SETTINGS {
+        int setting_id PK
+        int tenant_id FK
+        string company_name
+        string company_description
+        string website
+        string company_logo_url
+        string support_email
+        string phone_number
+        string primary_contact_name
+        string primary_contact_role
+        string mobile_number
+        string language
+        string timezone
+        string date_format
+        string currency
+        string number_format
+        datetime updated_at
+        int updated_by FK
+    }
+    
+    BILLING_INVOICES {
+        int invoice_id PK
+        int tenant_id FK
+        string invoice_number
+        decimal invoice_total
+        string status "paid/pending/overdue/failed"
+        date due_date
+        date paid_date
+        string invoice_prefix
+        decimal tax_rate_percent
+        string payment_terms
+        text invoice_footer
+        datetime created_at
+        datetime updated_at
+    }
+    
+    PAYMENT_METHODS {
+        int payment_method_id PK
+        string method_name
+        string method_type
+        text description
+        boolean is_enabled
+        text configuration
+        datetime created_at
+        datetime updated_at
+    }
+    
+    DELIVERY_ZONES {
+        int zone_id PK
+        string zone_name
+        string zone_type
+        decimal delivery_fee
+        string radius_description
+        text zone_rules
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+    
+    DEPARTMENT_ROUTING_RULES {
+        int rule_id PK
+        int tenant_id FK
+        string department_category
+        string assigned_team
+        int priority_level
+        text routing_conditions
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+    
+    ORDER_ROUTING_SETTINGS {
+        int setting_id PK
+        int tenant_id FK
+        boolean auto_assignment_enabled
+        string assignment_method
+        string priority_order_type
+        text routing_configuration
+        datetime updated_at
+        int updated_by FK
+    }
+    
+    USER_SESSIONS {
+        int session_id PK
+        int user_id FK
+        string device_type
+        string browser
+        string ip_address
+        string location
+        datetime login_time
+        datetime last_activity
+        boolean is_current
+        string session_token
+    }
+    
+    AUDIT_LOGS {
+        int log_id PK
+        int user_id FK
+        int tenant_id FK
+        string action_type
+        string module
+        text details
+        string ip_address
+        datetime timestamp
+        text old_values
+        text new_values
+    }
+    
+    NOTIFICATION_PREFERENCES {
+        int preference_id PK
+        int user_id FK
+        boolean email_notifications
+        boolean push_notifications
+        boolean sms_notifications
+        boolean new_messages_alert
+        boolean csr_status_changes_alert
+        boolean system_alerts_alert
+        boolean weekly_reports_alert
+        datetime updated_at
+    }
+    
+    SYSTEM_NOTIFICATIONS_CONFIG {
+        int config_id PK
+        boolean global_email_enabled
+        boolean global_sms_enabled
+        boolean global_push_enabled
+        boolean new_messages_enabled
+        boolean csr_status_enabled
+        boolean system_alerts_enabled
+        boolean weekly_reports_enabled
+        datetime updated_at
+        int updated_by FK
+    }
+    
+    PLATFORM_SETTINGS {
+        int setting_id PK
+        string platform_name
+        string platform_description
+        string support_email
+        boolean maintenance_mode
+        boolean api_rate_limiting_enabled
+        int default_rate_limit_per_hour
+        boolean api_versioning_enabled
+        string smtp_host
+        int smtp_port
+        string smtp_username
+        string smtp_password_encrypted
+        string email_from_name
+        string db_backup_frequency
+        int db_retention_period_days
+        boolean db_query_logging_enabled
+        int session_timeout_minutes
+        int minimum_password_length
+        int maximum_login_attempts
+        boolean require_two_factor_auth
+        boolean allow_password_reset
+        datetime updated_at
+        int updated_by FK
+    }
+    
+    FEATURE_TOGGLES {
+        int feature_id PK
+        string feature_name
+        string category
+        string scope "global/tenant"
+        string status "enabled/disabled"
+        decimal rollout_percentage
+        int affected_tenants_count
+        boolean is_experimental
+        text description
+        datetime created_at
+        datetime updated_at
+    }
+    
+    CUSTOMERS {
+        int customer_id PK
+        int tenant_id FK
+        string first_name
+        string last_name
+        string email
+        string phone_number
+        string location
+        string customer_type
+        datetime customer_since
+        decimal total_spent
+        int total_orders
+        datetime created_at
+        datetime updated_at
+    }
+    
+    CHANNELS {
+        int channel_id PK
+        int tenant_id FK
+        string channel_name
+        string channel_type
+        string connection_status "connected/disconnected/error"
+        text configuration_json
+        decimal usage_percentage
+        datetime last_message_at
+        boolean auto_reply_enabled
+        string display_name
+        string api_key_token_encrypted
+        string webhook_url
+        string assignment_method "round_robin/skill_based/manual"
+        datetime created_at
+        datetime updated_at
+    }
+    
+    CONVERSATIONS {
+        int conversation_id PK
+        int customer_id FK
+        int assigned_csr_id FK
+        int channel_id FK
+        int tenant_id FK
+        string status "open/pending/resolved/closed"
+        string priority "low/medium/high"
+        datetime started_at
+        datetime last_message_at
+        datetime resolved_at
+        boolean is_vip
+        text tags_json
+        decimal satisfaction_score
+    }
+    
+    MESSAGES {
+        int message_id PK
+        int conversation_id FK
+        int sender_id FK
+        string sender_type "csr/customer/system"
+        text message_content
+        string message_type "text/image/audio/video"
+        datetime sent_at
+        boolean is_read
+        int canned_response_id FK
+        string attachment_url
+    }
+    
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        int tenant_id FK
+        string order_number
+        decimal order_total
+        string order_status
+        int item_count
+        datetime order_date
+        datetime updated_at
+        text shipping_address
+        int delivery_zone_id FK
+        int payment_method_id FK
+        string department_category
+    }
+    
+    CANNED_RESPONSES {
+        int response_id PK
+        int tenant_id FK
+        string title
+        text content
+        string category
+        string shortcut
+        int created_by FK
+        int usage_count
+        datetime last_used
+        string visibility "public/team/private"
+        datetime created_at
+        boolean is_active
+        text tags_json
+    }
+    
+    KNOWLEDGE_BASE_ARTICLES {
+        int article_id PK
+        int tenant_id FK
+        string title
+        text content
+        string category
+        string status "draft/published/archived"
+        int created_by FK
+        int view_count
+        decimal rating
+        datetime created_at
+        datetime updated_at
+        text tags_json
+    }
+    
+    ANALYTICS_REPORTS {
+        int report_id PK
+        int tenant_id FK
+        string report_type
+        date report_date
+        int total_conversations
+        decimal avg_response_time_minutes
+        decimal avg_messages_per_chat
+        int active_csrs_count
+        decimal csat_score
+        decimal resolution_rate_percent
+        text channel_distribution_json
+        datetime generated_at
+    }
+    
+    ACHIEVEMENTS {
+        int achievement_id PK
+        int user_id FK
+        string achievement_type
+        string title
+        text description
+        datetime earned_date
+        string badge_color
+    }
+    
+    CHANNEL_TEMPLATES {
+        int template_id PK
+        int tenant_id FK
+        string template_name
+        string template_type "email/sms/chat/voice/social"
+        text content
+        string status "active/inactive"
+        int usage_count
+        datetime last_modified
+        datetime created_at
+    }
+    
+    PRODUCTS_SERVICES {
+        int product_id PK
+        int tenant_id FK
+        string name
+        string type "product/service"
+        string sku
+        text description
+        decimal price
+        int stock
+        string category
+        string status "active/inactive"
+        datetime created_at
+        datetime updated_at
+    }
+    
+    SYSTEM_LOGS {
+        int log_id PK
+        datetime timestamp
+        string level "info/warning/error"
+        string category "access/activity/error/integration"
+        text message
+        string user_ip
+        string endpoint
+        int user_id FK
+        int tenant_id FK
+    }
+    
+    %% Relationships
+    TENANTS ||--o{ USERS : "has"
+    TENANTS ||--o{ CUSTOMERS : "serves"
+    TENANTS ||--o{ CHANNELS : "configures"
+    TENANTS ||--o{ CONVERSATIONS : "manages"
+    TENANTS ||--o{ ORDERS : "processes"
+    TENANTS ||--o{ CANNED_RESPONSES : "provides"
+    TENANTS ||--o{ KNOWLEDGE_BASE_ARTICLES : "maintains"
+    TENANTS ||--o{ ANALYTICS_REPORTS : "generates"
+    TENANTS ||--o{ BILLING_INVOICES : "receives"
+    TENANTS ||--o{ COMPANY_SETTINGS : "defines"
+    TENANTS ||--o{ DEPARTMENT_ROUTING_RULES : "applies"
+    TENANTS ||--o{ ORDER_ROUTING_SETTINGS : "configures"
+    TENANTS ||--o{ CHANNEL_TEMPLATES : "uses"
+    TENANTS ||--o{ PRODUCTS_SERVICES : "offers"
+    TENANTS ||--o{ AUDIT_LOGS : "records"
+    TENANTS ||--o{ SYSTEM_LOGS : "generates"
+    TENANTS ||--o{ FEATURE_TOGGLES : "affected_by"
+
+    SUBSCRIPTION_PLANS ||--o{ TENANTS : "assigned_to"
+
+    USERS ||--o{ CONVERSATIONS : "assigned_to"
+    USERS ||--o{ MESSAGES : "sends"
+    USERS ||--o{ USER_SESSIONS : "creates"
+    USERS ||--o{ AUDIT_LOGS : "performs"
+    USERS ||--o{ NOTIFICATION_PREFERENCES : "sets"
+    USERS ||--o{ ACHIEVEMENTS : "earns"
+    USERS ||--o{ SYSTEM_LOGS : "generates"
+
+    ROLES ||--o{ USERS : "assigned_to"
+    ROLES ||--o{ ROLE_PERMISSIONS : "has"
+    PERMISSIONS ||--o{ ROLE_PERMISSIONS : "granted_by"
+
+    CUSTOMERS ||--o{ CONVERSATIONS : "initiates"
+    CUSTOMERS ||--o{ ORDERS : "places"
+
+    CHANNELS ||--o{ CONVERSATIONS : "facilitates"
+
+    CONVERSATIONS ||--o{ MESSAGES : "contains"
+
+    MESSAGES ||--o{ CANNED_RESPONSES : "uses"
+
+    ORDERS ||--o{ DELIVERY_ZONES : "uses"
+    ORDERS ||--o{ PAYMENT_METHODS : "paid_with"
+    ORDERS ||--o{ PRODUCTS_SERVICES : "includes"
+
+    BILLING_INVOICES ||--o{ PAYMENT_METHODS : "processed_by"
+
+    PLATFORM_SETTINGS ||--o{ SYSTEM_NOTIFICATIONS_CONFIG : "influences"
+    PLATFORM_SETTINGS ||--o{ FEATURE_TOGGLES : "manages"
+    PLATFORM_SETTINGS ||--o{ SYSTEM_LOGS : "configures"

@@ -1,0 +1,90 @@
+# Next.js build output
+.next/
+out/
+dist/
+
+# Optional: Next.js cache
+.next/cache/
+
+# Ignore TypeScript build info files
+*.tsbuildinfo
+
+# Ignore logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.dev
+
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Environment variables
+**/.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dist folder
+**/dist/
+
+# Coverage
+coverage/
+playwright-report/
+test-results/
+
+# Database backups
+backups/
+*.dump
+
+# Local service state
+**/.data/
+
+# npm cache
+.npm/
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.swp
+
+# Mac files
+.DS_Store
+
+# Local reference assets and generated artifacts
+artifacts/
+chat_service_logos/
+dashboards/workspace/docs/
+docs/v2/website/
+docs/ZayOS Product Charter.docx
+
+mydocs/
+
+# opencode
+.opencode/
+AGENTS.md
+opencode.json
+
+# local-only opencode ripgrep include file
+.ignore
+.freebuff/
+
+# task files for local ai task runner
+.task/
+task/
+
+# Graphify analysis output
+**/graphify-out/
+graphify-out/

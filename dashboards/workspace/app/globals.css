@@ -1,0 +1,335 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --banner-height: 0px;
+  --banner-bg-danger: #fff0f1;
+  --banner-border-danger: #F87171;
+  --banner-text-danger: #991B1B;
+  --banner-link-danger: #7F1D1D;
+  --banner-bg-warning: #FFFBEB;
+  --banner-border-warning: #fcd34d;
+  --banner-text-warning: #eb8337;
+  --banner-link-warning: #78350F;
+  --workspace-background: #f6f8fc;
+  --workspace-surface: #ffffff;
+  --workspace-surface-strong: #f8fafc;
+  --workspace-surface-muted: #eef2f7;
+  --workspace-border: #dbe3ef;
+  --workspace-text: #0f172a;
+  --workspace-text-muted: #64748b;
+  --workspace-text-soft: #94a3b8;
+  --workspace-accent: #5b5ce2;
+  --workspace-accent-soft: #f0efff;
+  --workspace-accent-strong: #3f3fce;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #5b5ce2;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2ff;
+  --secondary-foreground: #3730a3;
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: #f3f4f6;
+  --accent-foreground: #0f172a;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: #5b5ce2;
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #5b5ce2;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef2ff;
+  --sidebar-accent-foreground: #3730a3;
+  --sidebar-border: #dbe3ef;
+  --sidebar-ring: #5b5ce2;
+  --commerceos-primary: #5b5ce2;
+  --commerceos-secondary: #0f766e;
+  --commerceos-warning: #d97706;
+  --commerceos-danger: #dc2626;
+  --commerceos-neutral: #334155;
+}
+
+.dark {
+  --banner-bg-danger: #3E1616;
+  --banner-border-danger: #641F1F;
+  --banner-text-danger: #EB7D7D;
+  --banner-link-danger: #DA9200;
+  --banner-bg-warning: #342000;
+  --banner-border-warning: #523200;
+  --banner-text-warning: #DA9200;
+  --banner-link-warning: #DA9200;
+  --workspace-background: #0b1220;
+  --workspace-surface: #0f172a;
+  --workspace-surface-strong: #111b2e;
+  --workspace-surface-muted: #13233c;
+  --workspace-border: #1f2a3a;
+  --workspace-text: #e5eefb;
+  --workspace-text-muted: #94a3b8;
+  --workspace-text-soft: #64748b;
+  --workspace-accent: #4f7cff;
+  --workspace-accent-soft: #13233c;
+  --workspace-accent-strong: #8eb1ff;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: #0b1220;
+  --card-foreground: #e5eefb;
+  --popover: #0b1220;
+  --popover-foreground: #e5eefb;
+  --primary: #7b7cf4;
+  --primary-foreground: #ffffff;
+  --secondary: #111b2e;
+  --secondary-foreground: #e5eefb;
+  --muted: #111b2e;
+  --muted-foreground: #94a3b8;
+  --accent: #13233c;
+  --accent-foreground: #d6e4ff;
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: #1f2a3a;
+  --input: #1f2a3a;
+  --ring: #7b7cf4;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: #06101c;
+  --sidebar-foreground: #e5eefb;
+  --sidebar-primary: #7b7cf4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #102236;
+  --sidebar-accent-foreground: #d6e4ff;
+  --sidebar-border: #1f2a3a;
+  --sidebar-ring: #7b7cf4;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* global.css */
+
+@theme {
+  --animate-marquee: marquee 25s linear infinite;
+
+  /* App fonts: next/font (geist) exposes these via the className applied on
+     <html> in app/layout.tsx; fall back to system stacks if the variable is
+     unavailable (e.g. font not loaded yet). */
+  --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Fallback class to guarantee execution */
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--workspace-accent) 35%, transparent);
+    color: var(--workspace-text);
+  }
+}
+
+@layer components {
+  .workspace-shell {
+    @apply h-screen min-w-0 overflow-hidden bg-[var(--workspace-background)] text-[var(--workspace-text)];
+  }
+
+  .workspace-header {
+    @apply flex min-h-16 min-w-0 flex-wrap items-center gap-2 border-b border-slate-200/80 bg-white px-3 py-2.5 dark:border-[var(--workspace-border)] dark:bg-[var(--workspace-surface)] sm:flex-nowrap sm:gap-3 sm:px-6;
+  }
+
+  .workspace-page {
+    @apply min-w-0 flex-1 overflow-auto bg-[var(--workspace-background)] p-3 dark:bg-[var(--workspace-background)] sm:p-6;
+  }
+
+  .workspace-page :is(table, [role="table"]) {
+    @apply max-w-full;
+  }
+
+  body.workspace-inbox-rush .workspace-shell > [data-slot="sidebar"] {
+    @apply hidden;
+  }
+
+  body.workspace-inbox-rush .workspace-shell > main {
+    @apply w-full;
+  }
+
+  .workspace-card {
+    @apply rounded-lg border border-slate-200 bg-white shadow-sm shadow-slate-200/30 dark:border-[var(--workspace-border)] dark:bg-[var(--workspace-surface)] dark:shadow-black/20;
+  }
+
+  .workspace-panel {
+    @apply rounded-lg border border-slate-200 bg-white shadow-sm shadow-slate-200/30 dark:border-[var(--workspace-border)] dark:bg-[var(--workspace-surface)] dark:shadow-black/20;
+  }
+
+  .dark .workspace-shell :is(.bg-white, .bg-white\/90, .bg-white\/95, .bg-slate-50, .bg-slate-50\/40, .bg-slate-50\/50, .bg-gray-50, .bg-gray-100, .bg-slate-100, .bg-slate-100\/70, .bg-red-50, .bg-red-50\/70, .bg-orange-50, .bg-amber-50, .bg-yellow-50, .bg-lime-50, .bg-green-50, .bg-emerald-50, .bg-teal-50, .bg-cyan-50, .bg-sky-50, .bg-blue-50, .bg-blue-50\/70, .bg-indigo-50, .bg-indigo-50\/70, .bg-violet-50, .bg-fuchsia-50, .bg-pink-50, .bg-rose-50) {
+    @apply bg-[var(--workspace-surface)] text-[var(--workspace-text)];
+  }
+
+  .dark .workspace-shell :is(.border-slate-200, .border-slate-200\/80, .border-gray-100, .border-gray-200, .border-red-100, .border-orange-100, .border-amber-100, .border-yellow-100, .border-lime-100, .border-green-100, .border-emerald-100, .border-teal-100, .border-cyan-100, .border-sky-100, .border-blue-100, .border-indigo-100, .border-violet-100, .border-fuchsia-100, .border-pink-100, .border-rose-100) {
+    @apply border-[var(--workspace-border)];
+  }
+
+  .dark .workspace-shell :is(.text-slate-950, .text-slate-900, .text-gray-900, .text-black) {
+    @apply text-[var(--workspace-text)];
+  }
+
+  .dark .workspace-shell :is(.text-slate-700, .text-slate-600, .text-gray-700, .text-gray-600) {
+    @apply text-slate-300;
+  }
+
+  .dark .workspace-shell :is(.text-slate-500, .text-slate-400, .text-gray-500, .text-gray-400, .text-muted-foreground) {
+    @apply text-slate-400;
+  }
+
+  .dark .workspace-shell :is(.bg-blue-600, .bg-blue-700, .bg-indigo-600, .bg-indigo-700, .bg-violet-600, .bg-violet-700, .bg-sky-600, .bg-cyan-600) {
+    @apply bg-[var(--workspace-accent)];
+  }
+
+  .workspace-section-divider {
+    @apply border-slate-200/80 bg-gradient-to-r from-slate-200 via-slate-100 to-transparent dark:border-slate-800 dark:from-slate-700 dark:via-slate-800 dark:to-transparent;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize;
+  }
+
+  .status-pill::before {
+    content: "";
+    @apply h-1.5 w-1.5 rounded-full bg-white/75;
+  }
+
+  .status-new,
+  .status-pending,
+  .status-cod-pending,
+  .status-archived {
+    @apply border-[#74532f] bg-[#8a6638] text-white;
+    @apply dark:border-[#a17b49] dark:bg-[#76552f] dark:text-white;
+  }
+
+  .status-confirmed,
+  .status-partially-paid,
+  .status-shipped,
+  .status-standard {
+    @apply border-[#3f3d68] bg-[#56537f] text-white;
+    @apply dark:border-[#7773a3] dark:bg-[#4a486f] dark:text-white;
+  }
+
+  .status-packed,
+  .status-premium {
+    @apply border-[#59466f] bg-[#6c5882] text-white;
+    @apply dark:border-[#8c78a2] dark:bg-[#5d4b70] dark:text-white;
+  }
+
+  .status-out-for-delivery,
+  .status-processing {
+    @apply border-[#2e5b70] bg-[#3d7087] text-white;
+    @apply dark:border-[#6493a8] dark:bg-[#315f73] dark:text-white;
+  }
+
+  .status-delivered,
+  .status-paid,
+  .status-cod-collected,
+  .status-active {
+    @apply border-[#285a4d] bg-[#386f60] text-white;
+    @apply dark:border-[#5c927f] dark:bg-[#2f5f52] dark:text-white;
+  }
+
+  .status-cancelled,
+  .status-failed,
+  .status-blocked {
+    @apply border-[#713e49] bg-[#89505c] text-white;
+    @apply dark:border-[#aa7680] dark:bg-[#76434e] dark:text-white;
+  }
+
+  .status-returned,
+  .status-refunded,
+  .status-muted {
+    @apply border-[#465364] bg-[#596779] text-white;
+    @apply dark:border-[#7b899b] dark:bg-[#4c5969] dark:text-white;
+  }
+}
