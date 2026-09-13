@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    /* ZayOS platform console sidebar */
+    --sidebar-background: 222.2 47.4% 11.2%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222.2 47.4% 11.2%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --kme-navy: #1e3a8a;
+    --kme-navy-dark: #1e40af;
+    --kme-blue: #3b82f6;
+    --kme-blue-light: #6366f1;
+    --kme-purple: #8b5cf6;
+    --kme-orange: #f97316;
+    --kme-orange-light: #fb923c;
+    --zayos-primary: #4f46e5;
+    --zayos-secondary: #16a34a;
+    --zayos-warning: #f59e0b;
+    --zayos-danger: #dc2626;
+    --zayos-neutral: #334155;
+
+    /* Border Radius */
+    --radius: 0.5rem;
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    /* Accordion Keyframes */
+    --radix-accordion-content-height: 200px; /* example, override as needed */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .kme-gradient {
+    @apply bg-gradient-to-br from-kme-navy via-kme-blue to-kme-blue-light;
+  }
+
+  .kme-gradient-text {
+    @apply bg-gradient-to-r from-kme-navy via-kme-blue to-kme-purple bg-clip-text text-transparent;
+  }
+
+  .kme-card {
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  .kme-button-primary {
+    @apply bg-kme-navy hover:bg-kme-navy-dark text-white font-medium px-4 py-2 rounded-md transition-colors;
+  }
+
+  .kme-button-secondary {
+    @apply border border-kme-navy text-kme-navy hover:bg-kme-navy hover:text-white font-medium px-4 py-2 rounded-md transition-colors;
+  }
+}
+
+/* KME Custom Utility Classes */
+@layer utilities {
+  .bg-kme-navy {
+    background-color: hsl(var(--kme-navy));
+  }
+  .bg-kme-navy-dark {
+    background-color: hsl(var(--kme-navy-dark));
+  }
+  .bg-kme-blue-light {
+    background-color: hsl(var(--kme-blue-light));
+  }
+  .bg-kme-purple {
+    background-color: hsl(var(--kme-purple));
+  }
+  .bg-kme-orange {
+    background-color: hsl(var(--kme-orange));
+  }
+  .text-kme-navy {
+    color: hsl(var(--kme-navy));
+  }
+  .text-kme-orange {
+    color: hsl(var(--kme-orange));
+  }
+  .border-kme-navy {
+    border-color: hsl(var(--kme-navy));
+  }
+  .border-kme-orange {
+    border-color: hsl(var(--kme-orange));
+  }
+}

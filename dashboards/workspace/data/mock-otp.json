@@ -1,0 +1,13 @@
+[
+  {
+    "id": "otp_1788963987006_gbo29j",
+    "email": "test@demo.local",
+    "code": "605367",
+    "purpose": "otp_login",
+    "paymentId": null,
+    "expiresAt": "2026-09-09T14:36:27.006Z",
+    "usedAt": "2026-09-09T14:26:39.702Z",
+    "attemptCount": 0,
+    "createdAt": "2026-09-09T14:26:27.006Z"
+  }
+]

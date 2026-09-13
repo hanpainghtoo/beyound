@@ -1,0 +1,10 @@
+{
+  "name": "@zayos/internal-service-auth",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "types": "index.d.ts",
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "apps": [
+    {
+      "name": "zayos-workspace",
+      "script": "npm",
+      "args": "run dev",
+      "cwd": "./workspace",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": 3000
+      }
+    },
+    {
+      "name": "zayos-platform-console",
+      "script": "npm",
+      "args": "run dev",
+      "cwd": "./platform-console",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": 3001
+      }
+    }
+  ]
+}

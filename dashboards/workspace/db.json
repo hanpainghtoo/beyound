@@ -1,0 +1,110 @@
+{
+  "plans": [
+    {
+      "id": "e167c371-e2e1-499e-9de9-99f2d946922f",
+      "name": "Business Launch",
+      "code": "business-launch",
+      "monthlyPrice": 500000,
+      "monthlyPriceDisplay": "500,000 MMK / month",
+      "periodDurationLabel": "Monthly subscription",
+      "summary": "For growing online shops and commerce teams that need one organized workflow from customer conversation to completed delivery.",
+      "maxCsrs": 5,
+      "maxChannels": 2,
+      "inboundMessageLimit": 16000,
+      "outboundMessageLimit": 4000,
+      "apiLimit": 50000,
+      "storageLimitGb": 10,
+      "supportedProvidersLabel": "MESSENGER · TELEGRAM",
+      "status": "active"
+    },
+    {
+      "id": "2ab31ae2-95f9-4883-8ed8-a6d55b9469e8",
+      "name": "Business Growth",
+      "code": "business-growth",
+      "monthlyPrice": 1000000,
+      "monthlyPriceDisplay": "1,000,000 MMK / month",
+      "periodDurationLabel": "Monthly subscription",
+      "summary": "For established online brands, livestream sellers, and larger teams managing higher conversation and order volumes.",
+      "maxCsrs": 15,
+      "maxChannels": 4,
+      "inboundMessageLimit": 40000,
+      "outboundMessageLimit": 10000,
+      "apiLimit": 100000,
+      "storageLimitGb": 25,
+      "supportedProvidersLabel": "MESSENGER · TELEGRAM · VIBER",
+      "status": "active"
+    },
+    {
+      "id": "enterprise-plan-id",
+      "name": "Enterprise",
+      "code": "enterprise",
+      "monthlyPrice": 0,
+      "monthlyPriceDisplay": "Custom pricing",
+      "periodDurationLabel": "Monthly subscription",
+      "summary": "Custom commercial scope for larger organizations and tailored workflows.",
+      "maxCsrs": 50,
+      "maxChannels": 10,
+      "inboundMessageLimit": 100000,
+      "outboundMessageLimit": 100000,
+      "apiLimit": 200000,
+      "storageLimitGb": 50,
+      "supportedProvidersLabel": "All providers",
+      "status": "active"
+    }
+  ],
+  "payments": [
+    {
+      "planId": "e167c371-e2e1-499e-9de9-99f2d946922f",
+      "status": "confirmed",
+      "id": "y03LCSfg3uU",
+      "selectedOptionId": "kbz-bank"
+    }
+  ],
+  "paymentMethods": [
+    {
+      "id": "bank-account",
+      "name": "Bank Account",
+      "type": "bank",
+      "icon": "/brand/zayos-mark-light.png",
+      "options": [
+        {
+          "id": "kbz-bank",
+          "name": "KBZ Bank",
+          "icon": "/brand/KBZ.png",
+          "accountName": "ZayOS Corporation",
+          "accountNumber": "1234567890"
+        },
+        {
+          "id": "aya-bank",
+          "name": "AYA Bank",
+          "icon": "/brand/AYA.png",
+          "accountName": "ZayOS Corporation",
+          "accountNumber": "0987654321"
+        }
+      ]
+    },
+    {
+      "id": "digital-wallet",
+      "name": "Digital Wallet",
+      "type": "wallet",
+      "icon": "/brand/zayos-mark-light.png",
+      "options": [
+        {
+          "id": "kbz-pay",
+          "name": "KPay",
+          "icon": "/brand/kpay.png",
+          "accountName": "Kyaw Lin Myint",
+          "phoneNumber": "09888888888"
+        },
+        {
+          "id": "aya-pay",
+          "name": "AYAPay",
+          "icon": "/brand/AYA.png",
+          "accountName": "Kyaw Lin Myint",
+          "phoneNumber": "09888888888"
+        }
+      ]
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
