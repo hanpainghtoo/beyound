@@ -1,0 +1,615 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Pyidaungsu — the Burmese UI face (SIL OFL 1.1, see
+   public/fonts/LICENSE-OFL-Pyidaungsu.txt).
+
+   Scoped to the Myanmar locale: the face is only referenced from the
+   `[data-locale="my"]` font stack below, so on an English page nothing names
+   "Pyidaungsu" and the browser never even fetches these files. Under MY it sits
+   *after* Geist, so Latin keeps Geist untouched and only Burmese glyphs reach
+   Pyidaungsu.
+
+   Both files are Pyidaungsu 2.5.3 (github.com/mcfnlp/Pyidaungsu) — regular.ttf
+   is byte-identical to the upstream release, and bold.ttf must be the Bold of
+   *that same* family. Do not substitute "Pyidaungsu Book" here: it is a
+   separate typeface whose glyphs are visibly unrelated, so every bold Burmese
+   string rendered in a different font from the body copy beside it.
+
+   The family ships only two weights. Declaring them as ranges pins every
+   request: 500/600 resolve to the Regular file and 800/900 to the Bold file,
+   instead of the browser second-guessing which face to synthesise from. */
+@font-face {
+  font-family: "Pyidaungsu";
+  src: url("/fonts/pyidaungsu-regular.ttf") format("truetype");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pyidaungsu";
+  src: url("/fonts/pyidaungsu-bold.ttf") format("truetype");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --banner-height: 0px;
+  --banner-bg-danger: #fff0f1;
+  --banner-border-danger: #F87171;
+  --banner-text-danger: #991B1B;
+  --banner-link-danger: #7F1D1D;
+  --banner-bg-warning: #FFFBEB;
+  --banner-border-warning: #fcd34d;
+  --banner-text-warning: #eb8337;
+  --banner-link-warning: #78350F;
+  --workspace-background: #f6f8fc;
+  --workspace-surface: #ffffff;
+  --workspace-surface-strong: #f8fafc;
+  --workspace-surface-muted: #eef2f7;
+  --workspace-border: #dbe3ef;
+  --workspace-text: #0f172a;
+  --workspace-text-muted: #64748b;
+  --workspace-text-soft: #94a3b8;
+  --workspace-accent: #5b5ce2;
+  --workspace-accent-soft: #f0efff;
+  --workspace-accent-strong: #3f3fce;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #5b5ce2;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2ff;
+  --secondary-foreground: #3730a3;
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: #f3f4f6;
+  --accent-foreground: #0f172a;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: #5b5ce2;
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #5b5ce2;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef2ff;
+  --sidebar-accent-foreground: #3730a3;
+  --sidebar-border: #dbe3ef;
+  --sidebar-ring: #5b5ce2;
+
+  /* Commerce semantic palette — urgency signalling in the workspace inbox.
+     These carry meaning, never field identity: danger = act now, warning =
+     money at risk, secondary = resolved/healthy, neutral = routine.
+     Dark variants live in .dark so the signal stays calibrated in both themes. */
+  --commerceos-primary: #5b5ce2;
+  --commerceos-secondary: #0f766e;
+  --commerceos-warning: #d97706;
+  --commerceos-danger: #dc2626;
+  --commerceos-neutral: #334155;
+
+  /* Tinted surfaces for urgency accents (stripes, left rails, markers). Kept
+     low-chroma so a coloured edge reads as a signal, not a decoration. */
+  --commerceos-danger-soft: #fef2f2;
+  --commerceos-warning-soft: #fffbeb;
+  --commerceos-secondary-soft: #f0fdfa;
+  --commerceos-neutral-soft: #f8fafc;
+  --commerceos-on-danger: #ffffff;
+  --commerceos-on-warning: #ffffff;
+}
+
+.dark {
+  --banner-bg-danger: #3E1616;
+  --banner-border-danger: #641F1F;
+  --banner-text-danger: #EB7D7D;
+  --banner-link-danger: #DA9200;
+  --banner-bg-warning: #342000;
+  --banner-border-warning: #523200;
+  --banner-text-warning: #DA9200;
+  --banner-link-warning: #DA9200;
+  --workspace-background: #0b1220;
+  --workspace-surface: #0f172a;
+  --workspace-surface-strong: #111b2e;
+  --workspace-surface-muted: #13233c;
+  --workspace-border: #1f2a3a;
+  --workspace-text: #e5eefb;
+  --workspace-text-muted: #94a3b8;
+  --workspace-text-soft: #64748b;
+  --workspace-accent: #4f7cff;
+  --workspace-accent-soft: #13233c;
+  --workspace-accent-strong: #8eb1ff;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: #0b1220;
+  --card-foreground: #e5eefb;
+  --popover: #0b1220;
+  --popover-foreground: #e5eefb;
+  --primary: #7b7cf4;
+  --primary-foreground: #ffffff;
+  --secondary: #111b2e;
+  --secondary-foreground: #e5eefb;
+  --muted: #111b2e;
+  --muted-foreground: #94a3b8;
+  --accent: #13233c;
+  --accent-foreground: #d6e4ff;
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: #1f2a3a;
+  --input: #1f2a3a;
+  --ring: #7b7cf4;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: #06101c;
+  --sidebar-foreground: #e5eefb;
+  --sidebar-primary: #7b7cf4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #102236;
+  --sidebar-accent-foreground: #d6e4ff;
+  --sidebar-border: #1f2a3a;
+  --sidebar-ring: #7b7cf4;
+
+  /* Dark commerce palette — lifted to the 300–400 range so urgency keeps the
+     same perceived intensity against #0f172a instead of going muddy. */
+  --commerceos-primary: #7b7cf4;
+  --commerceos-secondary: #2dd4bf;
+  --commerceos-warning: #fbbf24;
+  --commerceos-danger: #f87171;
+  --commerceos-neutral: #94a3b8;
+
+  --commerceos-danger-soft: #2a1216;
+  --commerceos-warning-soft: #2a1f10;
+  --commerceos-secondary-soft: #0f2422;
+  --commerceos-neutral-soft: #111b2e;
+  /* Dark surfaces take dark ink on the lifted hues; light surfaces take white. */
+  --commerceos-on-danger: #0b1220;
+  --commerceos-on-warning: #0b1220;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* global.css */
+
+@theme {
+  --animate-marquee: marquee 25s linear infinite;
+
+  /* App fonts: next/font (geist) exposes these via the className applied on
+     <html> in app/layout.tsx; fall back to system stacks if the variable is
+     unavailable (e.g. font not loaded yet).
+
+     This is the default (English) stack: no Pyidaungsu in it, so on an EN page
+     the browser never names - let alone fetches - the Burmese files. The
+     Myanmar locale swaps the stack in under `[data-locale="my"]` further down.
+     The system Myanmar faces stay here as a last-resort fallback so a stray
+     Burmese glyph in EN (user input, untranslated content) still renders
+     instead of tofu: Noto Sans Myanmar on Linux/Android, Padauk,
+     Myanmar Sangam MN on Apple platforms, Myanmar Text on Windows. */
+  --font-sans: var(--font-geist-sans), "Noto Sans Myanmar", Padauk, "Myanmar Sangam MN", "Myanmar Text", Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Fallback class to guarantee execution */
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* Tailwind v4 preflight dropped v3's `button { cursor: pointer }`, so tabs,
+     stat-strip chips and every <Button> showed the default arrow. Restore it
+     for enabled controls only; disabled ones keep the default cursor. This
+     lives in the base layer, so `cursor-*` utilities still win. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--workspace-accent) 35%, transparent);
+    color: var(--workspace-text);
+  }
+}
+
+@layer components {
+  .workspace-shell {
+    @apply h-screen min-w-0 overflow-hidden bg-[var(--workspace-background)] text-[var(--workspace-text)];
+  }
+
+  .workspace-header {
+    @apply flex min-h-16 min-w-0 flex-wrap items-center gap-2 border-b border-slate-200/80 bg-white px-3 py-2.5 dark:border-[var(--workspace-border)] dark:bg-[var(--workspace-surface)] sm:flex-nowrap sm:gap-3 sm:px-6;
+  }
+
+  .workspace-page {
+    @apply min-w-0 flex-1 overflow-auto bg-[var(--workspace-background)] p-3 dark:bg-[var(--workspace-background)] sm:p-6;
+  }
+
+  .workspace-page :is(table, [role="table"]) {
+    @apply max-w-full;
+  }
+
+  /*
+   * Radix ScrollArea sizes its viewport's inner element with
+   * `display: table; min-width: 100%`. A table box is sized to max-content with
+   * only a *floor* from min-width — there is no cap. So any unbreakable child
+   * (`truncate` implies `white-space: nowrap`) widens the scroll area instead of
+   * being truncated, and the pane's own `overflow-hidden` then clips the
+   * overflow. That is why `min-w-0` + `truncate` on the children had no effect:
+   * nothing was constraining them.
+   *
+   * Restoring normal block layout lets min-width: 0 do its job, so long text
+   * ellipsises as intended. Applies to every ScrollArea in the workspace, which
+   * is correct — they all carried the latent bug, and it was only visible where
+   * content happened to be wide.
+   */
+  [data-radix-scroll-area-viewport] > div {
+    display: block !important;
+    max-width: 100%;
+  }
+
+  body.workspace-inbox-rush .workspace-shell > [data-slot="sidebar"] {
+    @apply hidden;
+  }
+
+  body.workspace-inbox-rush .workspace-shell > main {
+    @apply w-full;
+  }
+
+  .workspace-card {
+    @apply rounded-lg border border-slate-200 bg-white shadow-sm shadow-slate-200/30 dark:border-[var(--workspace-border)] dark:bg-[var(--workspace-surface)] dark:shadow-black/20;
+  }
+
+  .workspace-panel {
+    @apply rounded-lg border border-slate-200 bg-white shadow-sm shadow-slate-200/30 dark:border-[var(--workspace-border)] dark:bg-[var(--workspace-surface)] dark:shadow-black/20;
+  }
+
+  .dark .workspace-shell :is(.bg-white, .bg-white\/90, .bg-white\/95, .bg-slate-50, .bg-slate-50\/40, .bg-slate-50\/50, .bg-gray-50, .bg-gray-100, .bg-slate-100, .bg-slate-100\/70, .bg-red-50, .bg-red-50\/70, .bg-orange-50, .bg-amber-50, .bg-yellow-50, .bg-lime-50, .bg-green-50, .bg-emerald-50, .bg-teal-50, .bg-cyan-50, .bg-sky-50, .bg-blue-50, .bg-blue-50\/70, .bg-indigo-50, .bg-indigo-50\/70, .bg-violet-50, .bg-fuchsia-50, .bg-pink-50, .bg-rose-50) {
+    @apply bg-[var(--workspace-surface)] text-[var(--workspace-text)];
+  }
+
+  .dark .workspace-shell :is(.border-slate-200, .border-slate-200\/80, .border-gray-100, .border-gray-200, .border-red-100, .border-orange-100, .border-amber-100, .border-yellow-100, .border-lime-100, .border-green-100, .border-emerald-100, .border-teal-100, .border-cyan-100, .border-sky-100, .border-blue-100, .border-indigo-100, .border-violet-100, .border-fuchsia-100, .border-pink-100, .border-rose-100) {
+    @apply border-[var(--workspace-border)];
+  }
+
+  .dark .workspace-shell :is(.text-slate-950, .text-slate-900, .text-gray-900, .text-black) {
+    @apply text-[var(--workspace-text)];
+  }
+
+  .dark .workspace-shell :is(.text-slate-700, .text-slate-600, .text-gray-700, .text-gray-600) {
+    @apply text-slate-300;
+  }
+
+  .dark .workspace-shell :is(.text-slate-500, .text-slate-400, .text-gray-500, .text-gray-400, .text-muted-foreground) {
+    @apply text-slate-400;
+  }
+
+  .dark .workspace-shell :is(.bg-blue-600, .bg-blue-700, .bg-indigo-600, .bg-indigo-700, .bg-violet-600, .bg-violet-700, .bg-sky-600, .bg-cyan-600) {
+    @apply bg-[var(--workspace-accent)];
+  }
+
+  .workspace-section-divider {
+    @apply border-slate-200/80 bg-gradient-to-r from-slate-200 via-slate-100 to-transparent dark:border-slate-800 dark:from-slate-700 dark:via-slate-800 dark:to-transparent;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize;
+  }
+
+  .status-pill::before {
+    content: "";
+    @apply h-1.5 w-1.5 rounded-full bg-white/75;
+  }
+
+  .status-new,
+  .status-pending,
+  .status-cod-pending,
+  .status-archived {
+    @apply border-[#74532f] bg-[#8a6638] text-white;
+    @apply dark:border-[#a17b49] dark:bg-[#76552f] dark:text-white;
+  }
+
+  .status-confirmed,
+  .status-partially-paid,
+  .status-shipped,
+  .status-standard {
+    @apply border-[#3f3d68] bg-[#56537f] text-white;
+    @apply dark:border-[#7773a3] dark:bg-[#4a486f] dark:text-white;
+  }
+
+  .status-packed,
+  .status-premium {
+    @apply border-[#59466f] bg-[#6c5882] text-white;
+    @apply dark:border-[#8c78a2] dark:bg-[#5d4b70] dark:text-white;
+  }
+
+  .status-out-for-delivery,
+  .status-processing {
+    @apply border-[#2e5b70] bg-[#3d7087] text-white;
+    @apply dark:border-[#6493a8] dark:bg-[#315f73] dark:text-white;
+  }
+
+  .status-delivered,
+  .status-paid,
+  .status-cod-collected,
+  .status-active {
+    @apply border-[#285a4d] bg-[#386f60] text-white;
+    @apply dark:border-[#5c927f] dark:bg-[#2f5f52] dark:text-white;
+  }
+
+  .status-cancelled,
+  .status-failed,
+  .status-blocked {
+    @apply border-[#713e49] bg-[#89505c] text-white;
+    @apply dark:border-[#aa7680] dark:bg-[#76434e] dark:text-white;
+  }
+
+  .status-returned,
+  .status-refunded,
+  .status-muted {
+    @apply border-[#465364] bg-[#596779] text-white;
+    @apply dark:border-[#7b899b] dark:bg-[#4c5969] dark:text-white;
+  }
+}
+
+/* Plan 29: printable invoice document. Only .invoice-doc prints; all page
+   chrome and anything tagged .no-print is hidden. Forced black-on-white so
+   dark-mode tokens never print gray-on-gray or waste ink. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .invoice-doc,
+  .invoice-doc * {
+    visibility: visible;
+  }
+  .invoice-doc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    color: black !important;
+  }
+  .invoice-doc * {
+    background: transparent !important;
+    color: black !important;
+    border-color: #cbd5e1 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  @page {
+    margin: 1.5cm;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Burmese typography (locale `my`)
+
+   Pyidaungsu's ascent+descent box is 1.724em tall (bold: 1.558em) because
+   Burmese stacks vowel and consonant signs on a consonant. The actual painted
+   ink is 1.36em regular / 1.39em bold (measured over all 584 strings in
+   i18n_translation/my.json). Tailwind ships leadings down to 1.0em for display
+   sizes and 1.43em for body copy - both under that ink height - so on any
+   multi-line block the next line painted on top of the previous one: the
+   "duplicated text" look.
+
+   These rules are intentionally unlayered: they must beat Tailwind's utility
+   layer, which is where `.text-*` and `.leading-*` set line-height.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* Tunable: the floor for every Burmese line box, in em of the element's own
+     font size.
+
+     Measured across all 584 strings in i18n_translation/my.json with
+     canvas.actualBoundingBox* at 100px: Pyidaungsu's real ink is
+     1.36em regular / 1.39em bold - nowhere near the 1.724em the font's
+     ascent+descent box suggests. Tailwind's tightest leadings sit below
+     that (leading-none 1.0, leading-tight 1.25, the old 1.43 body leading),
+     which is what painted one line over the next.
+
+     1.6 leaves ~0.21em of daylight under the worst glyph stack and still
+     reads close to the English rhythm; 1.75 was 0.39em - safe, but visibly
+     looser than the design. */
+  --myanmar-line-height: 1.6;
+}
+
+/* The Myanmar locale's font stack: identical to the @theme default with
+   Pyidaungsu inserted right behind Geist. This one rule is the entire scope of
+   the Burmese face - on an English page no declaration names "Pyidaungsu", so
+   Geist (Latin) is untouched and the TTFs are never even requested; Burmese
+   glyphs fall through to the system faces above. Under MY, Latin still stops at
+   Geist and only Myanmar glyphs reach Pyidaungsu.
+
+   Deliberately unlayered: the @theme default lands in `@layer theme`, and an
+   unlayered rule beats any layer regardless of specificity, so this wins on
+   <html data-locale="my"> and every consumer of var(--font-sans) below it -
+   body's font-family, Tailwind's --default-font-family, and any `font-sans`
+   utility - resolves the MY stack. */
+[data-locale="my"] {
+  --font-sans: var(--font-geist-sans), "Pyidaungsu", "Noto Sans Myanmar", Padauk, "Myanmar Sangam MN", "Myanmar Text", Arial, Helvetica, sans-serif;
+}
+
+/* `!important` on purpose: several components set line-height inline from the
+   design tokens (`style={{ lineHeight: type.hHero.lineHeight }}`), and inline
+   styles beat any ordinary rule. Without this the landing hero still collided
+   at 1.15. */
+[data-locale="my"] {
+  line-height: var(--myanmar-line-height) !important;
+}
+
+/* Utilities set line-height explicitly (including arbitrary `leading-[1.12]`),
+   so inheritance alone is not enough. */
+[data-locale="my"] [class*="text-"],
+[data-locale="my"] [class*="leading-"] {
+  line-height: var(--myanmar-line-height) !important;
+}
+
+/* ...and this catches inline `line-height` on elements with no such class. */
+[data-locale="my"] [style*="line-height"] {
+  line-height: var(--myanmar-line-height) !important;
+}
+
+/* Last-resort wrap for Burmese.
+
+   Burmese is written without spaces between words, so a single word can be
+   wider than any fixed column. Chromium already breaks at real word
+   boundaries (its ICU dictionary handles `mymr`), but a word that still
+   doesn't fit would otherwise push its grid/flex track wider than the
+   viewport and get clipped by an ancestor's `overflow-hidden`.
+
+   `break-word` rather than `anywhere` on purpose: `anywhere` also changes
+   min-content sizing, which is what collapses every track to zero before the
+   wrap is even considered. `break-word` only kicks in once a word no longer
+   fits, so normal Burmese wrapping is untouched.
+
+   Deliberately unlayered, for the same reason as the rules above. */
+[data-locale="my"] {
+  overflow-wrap: break-word;
+}
+
+/* Widen the workspace sidebar when Burmese is active. The provider sets
+   `--sidebar-width: 16rem` inline, and `!important` overrides inline styles
+   here. The extra 2.5rem (16rem → 18.5rem) absorbs the ~25% glyph-width
+   increase documented for nav labels without forcing them to wrap. */
+[data-locale="my"] [data-slot="sidebar-wrapper"] {
+  --sidebar-width: 18.5rem !important;
+}
+
+/* The action group is a grid track that can end up narrower than its own
+   content (long Burmese CTAs, or a page passing a wider primary label such as
+   "Request Demo"). Without this the box's automatic minimum size kept it at
+   min-content and it spilled left, over the centred pill. Wrapping keeps it
+   inside the track: at worst the language switcher drops to a second line. */
+.header-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Header: Burmese nav labels run ~25% wider than English ("ပင်မစာမျက်နှာ",
+   "အကောင့်ဝင်ရန်"). Trim the header's own type scale so the pill and the
+   action buttons still fit on a single line instead of wrapping. */
+[data-locale="my"] .header-nav nav {
+  font-size: 13px;
+  gap: 2px;
+  padding: 5px 6px;
+}
+
+[data-locale="my"] .header-nav nav > a {
+  padding-inline: 10px;
+}
+
+[data-locale="my"] .header-actions {
+  gap: 8px;
+}
+
+[data-locale="my"] .header-actions > a {
+  font-size: 13px;
+  padding-inline: 14px;
+}
+
+/* The demo CTA is the first thing Burmese gives up: with it in the row the
+   action group is wider than the space a centred pill would leave it, at any
+   viewport. It stays in the mobile sheet, the footer and the English header. */
+[data-locale="my"] .header-demo {
+  display: none;
+}

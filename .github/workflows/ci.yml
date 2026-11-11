@@ -1,0 +1,225 @@
+name: Commerce OS CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    name: Backend build and tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: zayos
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d zayos"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend-core-service/package-lock.json
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: backend-core-service
+      - name: Build backend
+        run: npm run build
+        working-directory: backend-core-service
+        env:
+          NODE_ENV: test
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USERNAME: postgres
+          DB_PASSWORD: password
+          DB_NAME: zayos
+          JWT_SECRET: ci-local-secret-for-commerce-os-tests
+          FRONTEND_URLS: http://localhost:3100
+          INTERNAL_SERVICE_TOKEN_ISSUER: zayos-ci-internal-services
+          INTERNAL_SERVICE_TOKEN_SIGNING_KEY: ci-internal-service-token-signing-key-32-plus-chars
+      - name: Test backend
+        run: npm test -- --runInBand
+        working-directory: backend-core-service
+        env:
+          NODE_ENV: test
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USERNAME: postgres
+          DB_PASSWORD: password
+          DB_NAME: zayos
+          JWT_SECRET: ci-local-secret-for-commerce-os-tests
+          FRONTEND_URLS: http://localhost:3100
+          INTERNAL_SERVICE_TOKEN_ISSUER: zayos-ci-internal-services
+          INTERNAL_SERVICE_TOKEN_SIGNING_KEY: ci-internal-service-token-signing-key-32-plus-chars
+
+  dashboards:
+    name: Dashboard builds
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - dashboards/workspace
+          - dashboards/platform-console
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: ${{ matrix.app }}/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ matrix.app }}
+      - name: Build
+        run: npm run build
+        working-directory: ${{ matrix.app }}
+        env:
+          CORE_API_URL: http://localhost:3001/api/v1
+          NEXT_PUBLIC_SITE_URL: http://localhost:3000
+          PLATFORM_CONSOLE_URL: http://localhost:3000
+          META_APP_ID: 123456789012345
+          META_APP_SECRET: ci-meta-app-secret-with-32-characters
+          TIKTOK_CLIENT_KEY: ci-tiktok-client-key
+          WS_BASE_URL: http://localhost:3001
+
+  services:
+    name: Service builds and tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - services/chat-ingestion-service
+          - services/file-storage-service
+          - services/integration-service
+          - services/media-processing-service
+          - services/webhook-handler-service
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: ${{ matrix.service }}/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ matrix.service }}
+      - name: Build
+        run: npm run build
+        working-directory: ${{ matrix.service }}
+      - name: Test
+        run: npm test -- --runInBand
+        working-directory: ${{ matrix.service }}
+
+  browser-acceptance:
+    name: Live dashboard browser acceptance
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: zayos
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d zayos"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    env:
+      NODE_ENV: production
+      PORT: 6001
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
+      DB_NAME: zayos
+      DB_SYNCHRONIZE: "false"
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      JWT_SECRET: ci-local-secret-for-commerce-os-browser-tests
+      INTERNAL_SERVICE_TOKEN_ISSUER: zayos-ci-internal-services
+      INTERNAL_SERVICE_TOKEN_SIGNING_KEY: ci-internal-service-token-signing-key-32-plus-chars
+      FRONTEND_URLS: http://localhost:6100,http://localhost:6102
+      CORE_API_URL: http://localhost:6001/api/v1
+      ALLOW_PRODUCTION_SEED: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            backend-core-service/package-lock.json
+            dashboards/workspace/package-lock.json
+            dashboards/platform-console/package-lock.json
+      - name: Install application dependencies
+        run: |
+          npm --prefix backend-core-service ci
+          npm --prefix dashboards/workspace ci
+          npm --prefix dashboards/platform-console ci
+      - name: Build API and dashboards
+        run: |
+          npm run build:backend
+          npm run build:dashboards
+      - name: Migrate and seed browser database
+        run: |
+          npm --prefix backend-core-service run migration:run
+          npm --prefix backend-core-service run seed
+      - name: Start live browser stack
+        run: |
+          nohup npm --prefix backend-core-service run start:prod > /tmp/commerce-core-api.log 2>&1 &
+          nohup npm --prefix dashboards/workspace run start -- -p 6100 > /tmp/commerce-workspace.log 2>&1 &
+          nohup npm --prefix dashboards/platform-console run start -- -p 6102 > /tmp/commerce-platform-console.log 2>&1 &
+          for url in \
+            http://localhost:6001/api/docs \
+            http://localhost:6100 \
+            http://localhost:6102/login; do
+            for attempt in {1..60}; do
+              if curl --fail --silent --location --output /dev/null "$url"; then
+                break
+              fi
+              if [ "$attempt" -eq 60 ]; then
+                echo "Timed out waiting for $url"
+                exit 1
+              fi
+              sleep 2
+            done
+          done
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: dashboards/workspace
+      - name: Run root browser acceptance gate
+        run: npm run test:e2e
+      - name: Upload browser traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-acceptance-traces
+          path: |
+            dashboards/workspace/test-results
+            dashboards/platform-console/test-results
